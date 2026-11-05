@@ -1,0 +1,31 @@
+class Bird {
+    field int x, y;
+    field int radius;
+
+    constructor Bird new(int startX, int startY) {
+        let x = startX;
+        let y = startY;
+        let radius = 10;
+        return this;
+    }
+
+    // Renderizado inicial del objeto gráfico
+    method void draw() {
+        do Screen.setColor(true); 
+        do Screen.drawCircle(x, y, radius);
+        return;
+    }
+
+    // Método de borrado preparado para el Hito 2
+    method void erase() {
+        do Screen.setColor(false);
+        do Screen.drawCircle(x, y, radius);
+        return;
+    }
+
+    // Liberación de memoria
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+}

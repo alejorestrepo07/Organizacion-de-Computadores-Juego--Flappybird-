@@ -1,0 +1,84 @@
+class Board {
+    field Array pipes;
+    field Bird player;
+
+    constructor Board new() {
+        let pipes = Array.new(3);
+        let pipes[0] = Pipe.new(150, 40);
+        let pipes[1] = Pipe.new(300, 100);
+        let pipes[2] = Pipe.new(450, 160);
+        
+        let player = Bird.new(50, 128); 
+        return this;
+    }
+
+    // Renderizado del marcador ajustado a un solo dígito
+    method void drawHUD() {
+        do Output.moveCursor(0, 0); 
+        do Output.printString("0");
+        return;
+    }
+
+    method void run() {
+        var boolean exit;
+        var char key;
+        var int i;
+        var Pipe currentPipe;
+        var int rand; 
+        var int calc;
+        var int newTop;
+
+        let exit = false;
+        let rand = 42; 
+
+        while (~exit) {
+            let key = Keyboard.keyPressed();
+            
+            if (key = 81) { 
+                let exit = true; 
+            }
+
+            let i = 0;
+            while (i < 3) {
+                let currentPipe = pipes[i];
+                
+                if (currentPipe.getX() < 2) {
+                    let calc = (rand * 11) + 17;
+                    let rand = calc - ((calc / 150) * 150);
+                    let newTop = rand + 20; 
+                    
+                    do currentPipe.recycle(newTop);
+                } else {
+                    do currentPipe.move();
+                }
+                
+                let i = i + 1;
+            }
+
+            // Redibujado en cada fotograma para evitar que el borrado
+            // de las tuberías elimine al jugador o al marcador.
+            do player.draw();
+            do drawHUD();
+
+            do Sys.wait(20); 
+        }
+        return;
+    }
+
+    method void dispose() {
+        var int i;
+        var Pipe currentPipe;
+        let i = 0;
+        
+        while (i < 3) {
+            let currentPipe = pipes[i];
+            do currentPipe.dispose();
+            let i = i + 1;
+        }
+        
+        do pipes.dispose();
+        do player.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+}

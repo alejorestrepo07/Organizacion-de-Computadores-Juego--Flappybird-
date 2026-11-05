@@ -1,0 +1,11 @@
+class Main {
+    function void main() {
+        var Board game;
+        
+        let game = Board.new();
+        do game.run();
+        do game.dispose();
+        
+        return;
+    }
+}

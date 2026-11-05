@@ -1,0 +1,65 @@
+class Pipe {
+    field int x, gapTop, gapBottom, width, speed;
+
+    constructor Pipe new(int startX, int top) {
+        let x = startX;
+        let gapTop = top;
+        let gapBottom = top + 60; 
+        let width = 30;
+        let speed = 2;
+        return this;
+    }
+
+    method void draw(boolean color) {
+        do Screen.setColor(color);
+        if ((x > -1) & ((x + width) < 512)) {
+            do Screen.drawRectangle(x, 0, x + width, gapTop);
+            do Screen.drawRectangle(x, gapBottom, x + width, 255);
+        }
+        return;
+    }
+
+    method void move() {
+        let x = x - speed;
+
+        if ((x > -1) & ((x + width + speed) < 512)) {
+            do Screen.setColor(true);
+            do Screen.drawRectangle(x, 0, x + speed, gapTop);
+            do Screen.drawRectangle(x, gapBottom, x + speed, 255);
+
+            do Screen.setColor(false);
+            do Screen.drawRectangle(x + width, 0, x + width + speed, gapTop);
+            do Screen.drawRectangle(x + width, gapBottom, x + width + speed, 255);
+        }
+        return;
+    }
+
+    method int getX() {
+        return x;
+    }
+
+    method void recycle(int newTop) {
+        var int clearX;
+        
+        let clearX = x;
+        if (clearX < 0) {
+            let clearX = 0;
+        }
+        
+        do Screen.setColor(false);
+        do Screen.drawRectangle(clearX, 0, clearX + width + speed, gapTop);
+        do Screen.drawRectangle(clearX, gapBottom, clearX + width + speed, 255);
+        
+        let x = 480;    
+        let gapTop = newTop;
+        let gapBottom = newTop + 60; 
+        
+        do draw(true);
+        return;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+}

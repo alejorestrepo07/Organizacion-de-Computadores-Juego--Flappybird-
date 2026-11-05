@@ -1,0 +1,187 @@
+function Board.new 0
+push constant 2
+call Memory.alloc 1
+pop pointer 0
+push constant 3
+call Array.new 1
+pop this 0
+push constant 0
+push this 0
+add
+push constant 150
+push constant 40
+call Pipe.new 2
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 1
+push this 0
+add
+push constant 300
+push constant 100
+call Pipe.new 2
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 2
+push this 0
+add
+push constant 450
+push constant 160
+call Pipe.new 2
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 50
+push constant 128
+call Bird.new 2
+pop this 1
+push pointer 0
+return
+function Board.drawHUD 0
+push argument 0
+pop pointer 0
+push constant 0
+push constant 0
+call Output.moveCursor 2
+pop temp 0
+push constant 1
+call String.new 1
+push constant 48
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+push constant 0
+return
+function Board.run 7
+push argument 0
+pop pointer 0
+push constant 0
+pop local 0
+push constant 42
+pop local 4
+label WHILE_EXP0
+push local 0
+not
+not
+if-goto WHILE_END0
+call Keyboard.keyPressed 0
+pop local 1
+push local 1
+push constant 81
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+not
+pop local 0
+label IF_FALSE0
+push constant 0
+pop local 2
+label WHILE_EXP1
+push local 2
+push constant 3
+lt
+not
+if-goto WHILE_END1
+push local 2
+push this 0
+add
+pop pointer 1
+push that 0
+pop local 3
+push local 3
+call Pipe.getX 1
+push constant 2
+lt
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push local 4
+push constant 11
+call Math.multiply 2
+push constant 17
+add
+pop local 5
+push local 5
+push local 5
+push constant 150
+call Math.divide 2
+push constant 150
+call Math.multiply 2
+sub
+pop local 4
+push local 4
+push constant 20
+add
+pop local 6
+push local 3
+push local 6
+call Pipe.recycle 2
+pop temp 0
+goto IF_END1
+label IF_FALSE1
+push local 3
+call Pipe.move 1
+pop temp 0
+label IF_END1
+push local 2
+push constant 1
+add
+pop local 2
+goto WHILE_EXP1
+label WHILE_END1
+push this 1
+call Bird.draw 1
+pop temp 0
+push pointer 0
+call Board.drawHUD 1
+pop temp 0
+push constant 20
+call Sys.wait 1
+pop temp 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function Board.dispose 2
+push argument 0
+pop pointer 0
+push constant 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push constant 3
+lt
+not
+if-goto WHILE_END0
+push local 0
+push this 0
+add
+pop pointer 1
+push that 0
+pop local 1
+push local 1
+call Pipe.dispose 1
+pop temp 0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push this 0
+call Array.dispose 1
+pop temp 0
+push this 1
+call Bird.dispose 1
+pop temp 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return
